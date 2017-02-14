@@ -63,11 +63,15 @@ def question2(a):
 # 'C': [('B', 5)]}
 # Vertices are represented as unique strings. The function definition should be question3(G)
 # NOTE: MST Probelm, solved with Prim's Algorithm
+#import sys
+
+
 
 def question3(G):
 	import random
 	MST = {}
-	Ttemp = dict(G)
+	T = dict(G)
+
 	# Gather the nodes to be visited
 	nodes_to_visit = []
 	for node in G:
@@ -79,7 +83,52 @@ def question3(G):
 	#cur_node = random.choice(G.keys())
 	cur_node = 'A'
 	MST[cur_node] = []
-	visited.append(cur_node)
+	#visited.append(cur_node)
+
+	#for edge in G[cur_node]:
+	#while len(MST) < len(G):
+	while len(visited) < len(G):
+	#for node in G:
+		visited.append(cur_node)
+		print cur_node
+		#cur_node = node
+		#MST[node] = []
+		#print G[cur_node]
+		#print 'Edge: '
+		#print edge
+		# Look for the edge with the smallest weight that doesn't lead to a node already in the Minimum Spaning Tree
+		#if edge[0] not in MST:
+			# Add vertex not seen before
+			#
+
+		possible_edges = G[cur_node]
+		#print 'Possible edges'
+		#print possible_edges
+		possible_edges = [i for i in possible_edges if i[0] not in MST]
+		#print 'Possible edges'
+		print possible_edges
+		if not possible_edges:
+			#Iterate trhough MST to se if there are any ramaining nodes
+			for node in MST:
+				if node not in visited:
+					cur_node = node
+					#if 
+
+		smallest_edge = get_smallest_edge(possible_edges)
+		print smallest_edge
+		#MST[edge[0]] = []
+		#MST[cur_node] = smallest_edge
+		if smallest_edge:
+			MST[cur_node].append(smallest_edge)
+			# Add the inverse
+			MST[smallest_edge[0]] = [(cur_node, smallest_edge[1])]
+		#print cur_node
+		#print MST
+		if smallest_edge and not possible_edges:
+			cur_node = smallest_edge[0]
+		#print cur_node
+		print MST
+
 
 
 	return MST
@@ -87,14 +136,10 @@ def question3(G):
 
 
 #Gets the smallest edge from a given node in a graph
-def get_smallest_edge(G, node):
-	smallest_edge = (None, None)
-
-	for edge in G[node]:
-		if edge[1] < smallest_edge[1] or smallest_edge == (None, None):
-			smallest_edge = edge
-
-	return smallest_edge
+def get_smallest_edge(edges):
+	if not edges:
+		return 
+	return min(edges, key=lambda t: t[1])
 	
 
 
@@ -178,6 +223,19 @@ def test3():
 	print "Tests for Question 3: \n"
 
 	graph = {'A': [('B', 2)], 'B': [('A', 2), ('C', 5)], 'C': [('B', 5)]}
+	print question3(graph)
+
+	print "\n"
+
+	graph = {}
+	print question3(graph)
+
+	print "\n"
+
+	graph = {'A': [('B', 2)],
+			 'B': [('A', 2), ('C', 5), ('D', 10)], 
+ 			 'C': [('B', 5), ('D', 1)],
+ 			 'D': [('B', 10), ('C',1)]}
 	print question3(graph)
 
 	print "\n"

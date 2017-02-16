@@ -57,16 +57,13 @@ class Graph(object):
         for node in self.nodes:
             node.visited = False
 
-test1 = {'A': [('B', 2)],
-         'B': [('A', 2), ('C', 5)], 
-         'C': [('B', 5)]}
 
 def question3(G):
     if not G:
         return {}
     # Take the input adjacency list and parse it to a graph
     graph = to_graph(G)
-    return find_MST(graph)
+    return to_adjacency_list( find_MST(graph) )
 
 def bfs(self, start_node_num):
         """An iterative implementation of Breadth First Search
@@ -115,8 +112,10 @@ def find_MST(G):
     while queue:
         node = queue[-1]
         print 'Node', node.value
+        print '      Edges', [(x.node_to.value, x.node_from.value, x.value) for x in node.edges]
         possible_edges = [x for x in node.edges if not x.node_to.visited]
         # if there are no possible edges from the current node, pop it from the stack
+        print '      Edges', [(x.node_to.value, x.node_from.value,  x.value) for x in possible_edges]
         min_edge = None
         if not possible_edges:
             queue.pop()
@@ -128,8 +127,8 @@ def find_MST(G):
             mst.insert_edge(min_edge.value, min_edge.node_from.value, min_edge.node_to.value)
             node = min_edge.node_to
             enqueue(node, queue)
-            print 'Enqueue'
-            print node.value
+            print 'Enqueue ', node.value 
+            #print node.value
         #print min_edge.value
 
     return mst
@@ -144,13 +143,60 @@ def to_graph(G):
 
     for entry in G:
         node = Node(entry)
-
+        #print node.value
+        #print G[node.value]
         # Insert edges associated with the node created
         for edge in G[node.value]:
+            #print node.value, 'inserting edge: ', edge[1], node.value, edge[0]
             graph.insert_edge(edge[1], node.value, edge[0])
     return graph
 
+# This function takes a graph and return a adjacency list 
+def to_adjacency_list2(G):
+    Alist = {}
+    for node in G.nodes:
+        #print node.value
+        Alist[node.value] = []
+        for edge in node.edges:
+            #print edge
+            Alist[node.value].append( (edge.node_to.value, edge.value) )
+    #print [(x.node_from.value, x.value) for x in G.nodes[0].edges]
+    return Alist
+
+def to_adjacency_list(G):
+    Alist = {}
+    for node in G.nodes:
+        #print 'Node: ', node.value
+        Alist[node.value] = []
+
+        edges = [x for x in node.edges if not x.node_to.value == node.value]
+       # print edges
+
+        for edge in edges:
+            #print '    Edges: ', edge.node_to.value, edge.value
+            Alist[node.value].append( (edge.node_to.value, edge.value) )
+    #print [(x.node_from.value, x.value) for x in G.nodes[0].edges]
+    return Alist
 
 
-print question3(test1)
+test = {'A': [('B', 2)],
+         'B': [('A', 2), ('C', 5)], 
+         'C': [('B', 5)]}
+
+print question3(test)
+print test
+print to_adjacency_list(to_graph(test))
+
+test = {'A': [('B', 2)],
+          'B': [('A', 2), ('C', 5), ('D', 3)],
+          'C': [('B', 5), ('D', 3)]}
+print question3(test)
+
+test = {'A': [('B', 2), ('C', 1)],
+          'B': [('A', 2), ('C', 5), ('D', 3)],
+          'C': [('B', 5), ('D', 3), ('A', 1)]}
+print question3(test)
+
+
+
 

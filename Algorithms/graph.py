@@ -71,7 +71,16 @@ class Graph(object):
         column numbers represent to nodes.
         Store the edge values in each spot,
         and a 0 if no edge exists."""
-        return []
+        matrix = []
+        for row in range (len(self.nodes) +1):
+            matrix.append([0])
+            for column in range (len(self.nodes)):
+                matrix[row].append(0)
+
+        edge_lsit = self.get_edge_list()
+        for edge in edge_lsit:
+            matrix[edge[1]][edge[2]] = edge[0]
+        return matrix
 
 graph = Graph()
 graph.insert_edge(100, 1, 2)
@@ -82,5 +91,6 @@ graph.insert_edge(103, 3, 4)
 print graph.get_edge_list()
 # Should be [None, [(2, 100), (3, 101), (4, 102)], None, [(4, 103)], None]
 print graph.get_adjacency_list()
+# Should be [[0, 0, 0, 0, 0], [0, 0, 100, 101, 102], [0, 0, 0, 0, 0], [0, 0, 0, 0, 103], [0, 0, 0, 0, 0]]
 # Should be [[0, 0, 0, 0, 0], [0, 0, 100, 101, 102], [0, 0, 0, 0, 0], [0, 0, 0, 0, 103], [0, 0, 0, 0, 0]]
 print graph.get_adjacency_matrix()

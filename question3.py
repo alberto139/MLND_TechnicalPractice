@@ -16,8 +16,8 @@ import math
 class Node(object):
     def __init__(self, value):
         self.value = value
-        self.left = None
-        self.right = None
+        self.edges = []
+        self.visited = False
 
 class Edge(object):
     def __init__(self, value, node_from, node_to):
@@ -172,6 +172,3 @@ print question3(test)
 
 test = {}
 print question3(test)
-
-
-

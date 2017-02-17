@@ -296,56 +296,51 @@ class BinaryTree(object):
 # This finction return an integer
 def question4(T, r, n1, n2):
 
-	if not T or T == [[]]:
-		return None
 	# Build a tree from the matrix
 	bst = build_tree(T, r)
-	#print bst
+
 	return lca(bst.root, n1, n2)
+
 # Lowest Common Ancestor
 def lca(N, n1, n2):
 	if not N:
 		return None
 
 	cur_node = N
-	if n1 > max(n1, n2):
-		return lca(cur_node.left, n1, n1)
-	elif n1 < min(n1, n2):
+
+	if cur_node.value > max(n1, n2):
+		return lca(cur_node.left, n1, n2)
+	elif cur_node.value < min(n1, n2):
 		return lca(cur_node.right, n1, n2)
 	else:
 		return cur_node.value
 
-
-
-
 def build_tree(T, r):
 	tree = BinaryTree(r)
 	insert_node(T, tree.root)
+
 	return tree
-	#print 'Root: ', tree.root.value
-	#print tree.root.left.value, tree.root.right.value
-	#print tree.root.right.left.value
-
-
 
 def insert_node(T, node):
 	stack = [node]
 	while (stack):
 		new_node = None
+		#print node.value
 		for index, e in enumerate(T[node.value]):
 			#print e, index
 			if e and index < node.value:
 				new_node = node.left = TreeNode(index)
 				stack.append(node.left)
-				#print ' Left: of ', node.value, index
-				insert_node(T, TreeNode(index))
-				#return node.left
+
+				insert_node(T, node.left)
+
+
 			elif e and index > node.value:
 				new_node = node.right = TreeNode(index)
 				stack.append(node.right)
-				#print ' Right: of ', node.value, index
-				insert_node(T, TreeNode(index))
-				#return node.right
+
+				insert_node(T, node.right)
+
 		return new_node
 		stack.pop()
 	return None
@@ -519,7 +514,8 @@ def test_question4():
                     3,
                     1,
                     4)
-	print 'Test 2: Testing BST with LST to the right of root'
+	# 3
+	print 'Testing BST with LST to the right of root'
 	print 'Result should be 5'
 	print question4([[0, 1, 0, 0, 0, 0, 0, 0],
                      [0, 0, 0, 0, 0, 0, 0, 0],
@@ -532,7 +528,8 @@ def test_question4():
                     3,
                     4,
                     6)
-	print 'Test 3: Testing BST with LST to the left of root'
+	# 5
+	print 'Testing BST with LST to the left of root'
 	print 'Result should be 1'
 	print question4([[0, 0, 0, 0, 0, 0, 0, 0],
                      [1, 0, 1, 0, 0, 0, 0, 0],
@@ -545,6 +542,72 @@ def test_question4():
                     3,
                     0,
                     1)
+	# 1
+	print ""
+
+def test_question5():
+	print "Tests for Question 5: \n"
+	print "Linked list: "
+	# Test cases
+	# Set up some Elements
+	e1 = Element(1)
+	e2 = Element(2)
+	e3 = Element(3)
+	e4 = Element(4)
+
+	# Start setting up a LinkedList
+	ll = LinkedList(e1)
+	ll.append(e2)
+	ll.append(e3)
+
+	print e1.value , ' - ', e2.value, ' - ', e3.value, " \n"
+
+	# Should be the last element
+	print "The node that is 0 elements from the last is: ", 
+	print question5(ll, 0)
+	# 3
+	print "The node that is 1 elements from the last is: ", 
+	print question5(ll, 1)
+	# 2
+	print "The node that is 2 elements from the last is: ", 
+	print question5(ll, 2)
+	# 1
+	print "The node that is 3 elements from the last is: ", 
+	print question5(ll, 3)
+	# None
+
+	print ""
+
+	e1 = Element(23)
+	e2 = Element(2)
+	e3 = Element(876)
+	e4 = Element(0)
+	ll = LinkedList(e1)
+	ll.append(e2)
+	ll.append(e3)
+	ll.append(e4)
+	print "Linked list: "
+	print e1.value , ' - ', e2.value, ' - ', e3.value, ' - ', e4.value, " \n"
+
+	# Should be the last element
+	print "The node that is 0 elements from the last is: ", 
+	print question5(ll, 0)
+	# 0
+	print "The node that is 1 elements from the last is: ", 
+	print question5(ll, 1)
+	# 876
+	print "The node that is 2 elements from the last is: ", 
+	print question5(ll, 2)
+	# 2
+	print "The node that is 3 elements from the last is: ", 
+	print question5(ll, 3)
+	# 23
+	print "The node that is 12345 elements from the last is: ", 
+	print question5(ll, 12345)
+
+	print ""
+
+
 
 
 def main():
@@ -552,5 +615,6 @@ def main():
 	test_question2()
 	test_question3()
 	test_question4()
+	test_question5()
 if __name__ == '__main__':
 	main()

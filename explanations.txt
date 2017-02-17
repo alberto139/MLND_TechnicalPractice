@@ -1,0 +1,89 @@
+﻿# Question 1 
+# Given two strings s and t, determine whether some anagram of t is a substring of s. 
+# For example: if s = "udacity" and t = "ad", then the function returns True. 
+# Your function definition should look like: question1(s, t) and return a boolean True or False
+
+
+The implementation for this solutions depends on the definition of anagram. I interpreted it as a rearrangement of the letters of the t string in any order (including the original arrangement). The arrangement does not have to be continuous. For example ‘123456’ would be considered to contain a substring of ‘164’ that is an anagram of ‘164’, namely the substring ‘146’. For my solution the only data structures used are the two string inputs. For every character on the s string, I remove it in the s string and in the t string if it occurs. If at the end the t string is not empty there was at least one character that was not in s, meaning that s can not contain a substring that is an anagram of t. If t is empty then s did contain a substring that was an anagram of t. 
+
+
+This implementation does a number of computations for every element of s. This means that the runtime is roughly O(n) where n is the number of elements in string s. The space complexity will only be the two strings, so it will be constant O(1).
+
+
+# Question 2
+# Given a string a, find the longest palindromic substring contained in a. 
+# Your function definition should look like question2(a), and return a string.
+
+
+For this question we consider all of the substrings of s, starting from the largest one (the complete s string itself). We then consider the string minus the last character and then minus the last two and so on. After we only consider the first character , we then consider all the substrings starting from the second character and proceed as before. If a substring is the largest one we have encountered we keep track of it. 
+
+
+This implementation runs through all the elements of the string n times, where n is the length of the string. Therefore the runtime can be simplified to O(n^2). Since we only consider the current substring the space complexity is a constant O(1).
+
+
+# Question 3
+# Given an undirected graph G, find the minimum spanning tree within G. 
+# A minimum spanning tree connects all vertices in a graph with the smallest possible total weight of edges.
+# Your function should take in and return an adjacency list structured like this:
+
+
+#{'A': [('B', 2)],
+# 'B': [('A', 2), ('C', 5)], 
+# 'C': [('B', 5)]}
+#Vertices are represented as unique strings. The function definition should be question3(G)
+
+
+Question 3 can be simplified to a Minimum Spanning Tree problem. To solve this I chose to implement Prim’s Algorithm, However before doing so the input must be converted from an adjacency table to a graph. Once the graph has been built, starting from an arbitrary node it chooses the edge with the smallest weight, to a node that has not yet been visited. To do this I used a stack. In no possible edges are found from the current node, we pop the stack to get the previously visited node and check for possible edges. Once the stack is empty we are done. 
+
+
+To build the graph we go through every key and every entry in each key. This takes O(|V| + |E|). This implementation of Prim’s Algorithm using a stack, recalculated all the edges each time a node is visited, therefore the runtime will be O(|V| * |E|). For space our stack grow to |V| and our list containing all the possible edges grow to |E|. The space complexity is O(|V| + |E|). 
+
+
+#Question 4
+# Find the least common ancestor between two nodes on a binary search tree. 
+# The least common ancestor is the farthest node from the root that is an ancestor of both nodes. 
+# For example, the root is a common ancestor of all nodes on the tree, 
+# but if both nodes are descendents of the root's left child, 
+# then that left child might be the lowest common ancestor. 
+# You can assume that both nodes are in the tree, and the tree itself adheres to all BST properties. 
+# The function definition should look like question4(T, r, n1, n2), where T is the tree represented as a matrix, 
+# where the index of the list is equal to the integer stored in that node and a 1 represents a child node, 
+# r is a non-negative integer representing the root, 
+# and n1 and n2 are non-negative integers representing the two nodes in no particular order. 
+# For example, one test case might be
+
+
+# question4([[0, 1, 0, 0, 0],
+#            [0, 0, 0, 0, 0],
+#            [0, 0, 0, 0, 0],
+#            [1, 0, 0, 0, 1],
+#            [0, 0, 0, 0, 0]],
+#           3,
+#           1,
+#           4)
+# and the answer would be 3.
+
+
+
+
+For this problem we first convert the adjacency matrix to a binary search tree. After creating the tree we then traverse it looking at each node value and going down the left branch if both n1 and n1 are smaller than the node value or down the right branch if both n1 and n2 are larger than the node value. If it is not the case that both n1 and n2 are larger or smaller than the current node value, we know we have reached the lowest common ancestor and return its node value. 
+
+
+This implementation in it’s worst case traverses every level of the tree once. So the time complexity is O(log(n)). We use a tree as our data structure so the space complexity will be O(|V|).
+
+
+
+
+# Question 5
+# Find the element in a singly linked list that's m elements from the end. 
+# For example, if a linked list has 5 elements, the 3rd element from the end is the 3rd element. 
+# The function definition should look like question5(ll, m), 
+# where ll is the first node of a linked list and m is the "mth number from the end". 
+# You should copy/paste the Node class below to use as a representation of a node in the linked list. 
+# Return the value of the node at that position.
+
+
+To solve this problem we take a linked list and traverse it to the end, keeping track of how many elements we have visited. Once the end is reached we know the length on the linked list. To find the mth position from the back we calculate the number of elements visited - m. We then traverse the linked list once more until we reach the length - m element, which is the mth element from the back of the list. 
+
+
+Since we are traversing a linked list twice the time complexity of this algorithm is O(2n) simplified to O(n). Our only data structure is the linked list so our space complexity is also O(n)
